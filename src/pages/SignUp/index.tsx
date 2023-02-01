@@ -1,5 +1,6 @@
-import styled from '@emotion/styled';
 import * as React from 'react';
+
+import SignForm from 'components/common/SignForm';
 
 type FormState = {
 	email: string;
@@ -9,13 +10,6 @@ const initialFormState = {
 	email: '',
 	password: '',
 };
-const Form = styled.form`
-	display: flex;
-	flex-direction: column;
-	width: 500px;
-	justify-content: center;
-	align-items: center;
-`;
 export default function SignUp() {
 	const [formState, setFormState] = React.useState<FormState>(initialFormState);
 	const onFormInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -28,7 +22,7 @@ export default function SignUp() {
 		e.preventDefault();
 	};
 	return (
-		<Form onSubmit={onFormSubmit}>
+		<SignForm onSubmit={onFormSubmit}>
 			<h1>회원가입</h1>
 			<label htmlFor="email">
 				<span>이메일</span>
@@ -53,6 +47,6 @@ export default function SignUp() {
 			<button type="submit" data-testid="signup-button">
 				회원가입
 			</button>
-		</Form>
+		</SignForm>
 	);
 }
