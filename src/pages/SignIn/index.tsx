@@ -1,6 +1,7 @@
 import * as React from 'react';
 
 import SignForm from 'components/common/SignForm';
+import validation from 'utils/validation';
 
 type FormState = {
 	email: string;
@@ -12,6 +13,7 @@ const initialFormState = {
 };
 export default function SignIn() {
 	const [formState, setFormState] = React.useState<FormState>(initialFormState);
+	const [btnDisabled, setBtnDisabled] = React.useState(true);
 	const onFormInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setFormState((prevState) => ({
 			...prevState,
@@ -21,8 +23,19 @@ export default function SignIn() {
 	const onFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 	};
+	React.useEffect(() => {
+		if (
+			!validation.checkEmail(formState.email) ||
+			!validation.checkPassword(formState.password)
+		) {
+			setBtnDisabled(true);
+			return;
+		}
+		setBtnDisabled(false);
+	}, [formState]);
+
 	return (
-		<SignForm onSubmit={onFormSubmit}>
+		<SignForm onSubmit={onFormSubmit} noValidate>
 			<h1>로그인</h1>
 			<label htmlFor="email">
 				<span>이메일</span>
@@ -44,7 +57,7 @@ export default function SignIn() {
 					onChange={onFormInputChange}
 				/>
 			</label>
-			<button type="submit" data-testid="signin-button">
+			<button type="submit" data-testid="signin-button" disabled={btnDisabled}>
 				로그인
 			</button>
 		</SignForm>
