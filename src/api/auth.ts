@@ -6,11 +6,15 @@ const authApi = api('auth/');
 const signUp = async (
 	body: { email: string; password: string },
 	successCallback: () => void,
-	failureCallback: () => void
+	failureCallback: (msg: string) => void
 ) => {
-	const res = await authApi.post('signup', body);
-	if (res.status === 201) successCallback();
-	else failureCallback();
+	try {
+		const res = await authApi.post('signup', body);
+		if (res.status === 201) successCallback();
+	} catch (err) {
+		const msg = (err as AxiosError<{ message: string }>).response?.data.message;
+		failureCallback(msg || '회원가입 처리중 에러가 발생했습니다.');
+	}
 };
 
 const signIn = async (
