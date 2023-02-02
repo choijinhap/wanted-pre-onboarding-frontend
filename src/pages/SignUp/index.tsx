@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import SignForm from 'components/common/SignForm';
 import validation from 'utils/validation';
 import auth from 'api/auth';
+import storage from 'utils/storage';
 
 type FormState = {
 	email: string;
@@ -32,6 +33,10 @@ export default function SignUp() {
 			() => alert('회원가입에 실패했습니다. 다시 시도해주세요')
 		);
 	};
+
+	React.useEffect(() => {
+		if (storage.checkAccessToken()) navigate('/todo');
+	}, []);
 	React.useEffect(() => {
 		if (
 			!validation.checkEmail(formState.email) ||

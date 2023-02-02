@@ -2,4 +2,6 @@ const storeAccessToken = (accessToken: string) => {
 	localStorage.setItem('access_token', accessToken);
 };
 
-export default { storeAccessToken };
+const checkAccessToken = () => !!localStorage.getItem('access_token');
+
+export default { storeAccessToken, checkAccessToken };

@@ -39,6 +39,9 @@ export default function SignIn() {
 		);
 	};
 	React.useEffect(() => {
+		if (storage.checkAccessToken()) navigate('/todo');
+	}, []);
+	React.useEffect(() => {
 		if (
 			!validation.checkEmail(formState.email) ||
 			!validation.checkPassword(formState.password)
