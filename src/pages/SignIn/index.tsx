@@ -3,6 +3,8 @@ import * as React from 'react';
 import SignForm from 'components/common/SignForm';
 import validation from 'utils/validation';
 import auth from 'api/auth';
+import storage from 'utils/storage';
+import { useNavigate } from 'react-router-dom';
 
 type FormState = {
 	email: string;
@@ -15,6 +17,8 @@ const initialFormState = {
 export default function SignIn() {
 	const [formState, setFormState] = React.useState<FormState>(initialFormState);
 	const [btnDisabled, setBtnDisabled] = React.useState(true);
+	const navigate = useNavigate();
+
 	const onFormInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setFormState((prevState) => ({
 			...prevState,
@@ -26,8 +30,8 @@ export default function SignIn() {
 		auth.signIn(
 			formState,
 			(accessToken) => {
-				console.log(accessToken);
-				// accetoken 로컬스토리지에 저장후 /todo로 이동
+				storage.storeAccessToken(accessToken);
+				navigate('/todo');
 			},
 			(msg) => {
 				alert(msg);
