@@ -2,6 +2,7 @@ import * as React from 'react';
 
 import SignForm from 'components/common/SignForm';
 import validation from 'utils/validation';
+import auth from 'api/auth';
 
 type FormState = {
 	email: string;
@@ -22,6 +23,16 @@ export default function SignIn() {
 	};
 	const onFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
+		auth.signIn(
+			formState,
+			(accessToken) => {
+				console.log(accessToken);
+				// accetoken 로컬스토리지에 저장후 /todo로 이동
+			},
+			(msg) => {
+				alert(msg);
+			}
+		);
 	};
 	React.useEffect(() => {
 		if (
